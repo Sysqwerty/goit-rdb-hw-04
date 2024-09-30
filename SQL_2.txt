@@ -1,0 +1,34 @@
+2. Заповніть таблиці простими видуманими тестовими даними. Достатньо одного-двох рядків у кожну таблицю.
+
+INSERT INTO authors (author_name) VALUES
+('J.K. Rowling'),
+('George R. R. Martin'),
+('J.R.R. Tolkien'),
+('Mark Twain')
+
+INSERT INTO genres (genre_name) VALUES
+('Fantasy'),
+('Science Fiction'),
+('Horror'),
+('Romance')
+
+INSERT INTO books (title, publication_year, author_id, genre_id) VALUES
+('Harry Potter and the Philosopher\'s Stone', 1997, 1, 1),
+('Harry Potter and the Chamber of Secrets', 1998, 1, 1),
+('A Game of Thrones', 1996, 2, 1),
+('The Lord of the Rings', 2000, 3, 2),
+('The Return of the King', 2003, 3, 2),
+('Alice\'s Adventures in Wonderland', 1901, 4, 4)
+
+INSERT INTO users (username, email) VALUES
+('john_doe', 'x5k7f@example.com'),
+('jane_smith', 'pCtKd@example.com'),
+('bob_jones', 'GxXuO@example.com'),
+('sarah_wilson', 'bRk3e@example.com')
+
+INSERT INTO borrowed_books (book_id, user_id, borrow_date, return_date) VALUES
+(24, 1, '2000-01-01', '2023-01-15'),
+(25, 1, '2001-02-02', '2001-02-16'),
+(29, 2, '2010-09-03', '2010-09-17'),
+(26, 3, '2018-11-04', '2018-11-18'),
+(27, 4, '2024-01-05', '2024-02-01')

@@ -1,0 +1,33 @@
+3. Перейдіть до бази даних, з якою працювали у темі 3. Напишіть запит за допомогою операторів FROM та INNER JOIN, що об’єднує всі таблиці даних, які ми завантажили з файлів: order_details, orders, customers, products, categories, employees, shippers, suppliers. Для цього ви маєте знайти спільні ключі.
+
+Перевірте правильність виконання запиту.
+
+SELECT 
+    o.id order_id,
+    cus.name customer_name,
+    e.first_name employee_first_name,
+    e.last_name employee_last_name,
+    sh.name shipper_name,
+    o.date order_date,
+    p.name product_name,
+    cat.name category_name,
+    sup.name supplier_name,
+    od.quantity quantity,
+    p.price price
+FROM
+    orders o
+        INNER JOIN
+    order_details od ON o.id = od.order_id
+        INNER JOIN
+    customers cus ON o.customer_id = cus.id
+        INNER JOIN
+    employees e ON o.employee_id = e.employee_id
+        INNER JOIN
+    products p ON od.product_id = p.id
+        INNER JOIN
+    shippers sh ON o.shipper_id = sh.id
+        INNER JOIN
+    categories cat ON p.category_id = cat.id
+        INNER JOIN
+    suppliers sup ON p.supplier_id = sup.id;
+    

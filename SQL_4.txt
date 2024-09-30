@@ -1,0 +1,185 @@
+Виконайте запити, перелічені нижче.
+
+1) Визначте, скільки рядків ви отримали (за допомогою оператора COUNT).
+SELECT 
+    COUNT(*)
+FROM
+    orders o
+        INNER JOIN
+    order_details od ON o.id = od.order_id
+        INNER JOIN
+    customers cus ON o.customer_id = cus.id
+        INNER JOIN
+    employees e ON o.employee_id = e.employee_id
+        INNER JOIN
+    products p ON od.product_id = p.id
+        INNER JOIN
+    shippers sh ON o.shipper_id = sh.id
+        INNER JOIN
+    categories cat ON p.category_id = cat.id
+        INNER JOIN
+    suppliers sup ON p.supplier_id = sup.id;
+
+Result: 518    
+
+2) Змініть декілька операторів INNER на LEFT чи RIGHT. Визначте, що відбувається з кількістю рядків. Чому? Напишіть відповідь у текстовому файлі.
+
+SELECT 
+    COUNT(*)
+FROM
+    orders o
+        LEFT JOIN
+    order_details od ON o.id = od.order_id
+        LEFT JOIN
+    customers cus ON o.customer_id = cus.id
+        INNER JOIN
+    employees e ON o.employee_id = e.employee_id
+        INNER JOIN
+    products p ON od.product_id = p.id
+        INNER JOIN
+    shippers sh ON o.shipper_id = sh.id
+        INNER JOIN
+    categories cat ON p.category_id = cat.id
+        INNER JOIN
+    suppliers sup ON p.supplier_id = sup.id;
+
+Result: 518
+
+У загальному випадку використання операторів LEFT JOIN або RIGHT JOIN може призвести до повернення більшої кількості рядків у порівнянні з оператором INNER JOIN. Це відбувається тому, що INNER JOIN повертає лише ті рядки, для яких є відповідності в обох таблицях, що беруть участь у з'єднанні.
+
+При використанні LEFT JOIN або RIGHT JOIN, результуючий набір даних включатиме всі рядки з лівої або правої таблиці відповідно, навіть якщо для них немає відповідного запису в іншій таблиці. У таких випадках поля, для яких не знайдено відповідності, будуть містити значення NULL.
+
+У нашому конкретному прикладі кількість записів не змінилася і залишилася на рівні 518, оскільки в наданих CSV-файлах не було даних, які б не мали відповідностей у з'єднаних таблицях. Таким чином, не було жодних записів із значеннями NULL у результаті виконання запиту.
+
+3) Оберіть тільки ті рядки, де employee_id > 3 та ≤ 10.
+
+SELECT 
+    o.id order_id,
+    cus.name customer_name,
+    e.first_name employee_first_name,
+    e.last_name employee_last_name,
+    sh.name shipper_name,
+    o.date order_date,
+    p.name product_name,
+    cat.name category_name,
+    sup.name supplier_name,
+    od.quantity quantity,
+    p.price price
+FROM
+    orders o
+        LEFT JOIN
+    order_details od ON o.id = od.order_id
+        LEFT JOIN
+    customers cus ON o.customer_id = cus.id
+        INNER JOIN
+    employees e ON o.employee_id = e.employee_id
+        INNER JOIN
+    products p ON od.product_id = p.id
+        INNER JOIN
+    shippers sh ON o.shipper_id = sh.id
+        INNER JOIN
+    categories cat ON p.category_id = cat.id
+        INNER JOIN
+    suppliers sup ON p.supplier_id = sup.id
+    WHERE e.employee_id > 3 AND e.employee_id <= 10
+
+Result: 317
+
+4) Згрупуйте за іменем категорії, порахуйте кількість рядків у групі, середню кількість товару (кількість товару знаходиться в order_details.quantity)
+
+SELECT 
+    cat.name category_name, COUNT(*) count, AVG(od.quantity) average_quantity
+FROM
+    orders o
+        INNER JOIN
+    order_details od ON o.id = od.order_id
+        INNER JOIN
+    customers cus ON o.customer_id = cus.id
+        INNER JOIN
+    employees e ON o.employee_id = e.employee_id
+        INNER JOIN
+    products p ON od.product_id = p.id
+        INNER JOIN
+    shippers sh ON o.shipper_id = sh.id
+        INNER JOIN
+    categories cat ON p.category_id = cat.id
+        INNER JOIN
+    suppliers sup ON p.supplier_id = sup.id
+    WHERE e.employee_id > 3 AND e.employee_id <= 10
+    GROUP BY cat.name
+
+5) Відфільтруйте рядки, де середня кількість товару більша за 21.
+
+SELECT 
+    cat.name category_name, COUNT(*) count, AVG(od.quantity) average_quantity
+FROM
+    orders o
+        INNER JOIN
+    order_details od ON o.id = od.order_id
+        INNER JOIN
+    customers cus ON o.customer_id = cus.id
+        INNER JOIN
+    employees e ON o.employee_id = e.employee_id
+        INNER JOIN
+    products p ON od.product_id = p.id
+        INNER JOIN
+    shippers sh ON o.shipper_id = sh.id
+        INNER JOIN
+    categories cat ON p.category_id = cat.id
+        INNER JOIN
+    suppliers sup ON p.supplier_id = sup.id
+    WHERE e.employee_id > 3 AND e.employee_id <= 10
+    GROUP BY cat.name
+    HAVING average_quantity > 21
+
+6) Відсортуйте рядки за спаданням кількості рядків.
+
+SELECT 
+    cat.name category_name, COUNT(*) count, AVG(od.quantity) average_quantity
+FROM
+    orders o
+        INNER JOIN
+    order_details od ON o.id = od.order_id
+        INNER JOIN
+    customers cus ON o.customer_id = cus.id
+        INNER JOIN
+    employees e ON o.employee_id = e.employee_id
+        INNER JOIN
+    products p ON od.product_id = p.id
+        INNER JOIN
+    shippers sh ON o.shipper_id = sh.id
+        INNER JOIN
+    categories cat ON p.category_id = cat.id
+        INNER JOIN
+    suppliers sup ON p.supplier_id = sup.id
+    WHERE e.employee_id > 3 AND e.employee_id <= 10
+    GROUP BY cat.name
+    HAVING average_quantity > 21
+    ORDER BY count DESC
+
+7) Виведіть на екран (оберіть) чотири рядки з пропущеним першим рядком.
+
+SELECT 
+    cat.name category_name, COUNT(*) count, AVG(od.quantity) average_quantity
+FROM
+    orders o
+        INNER JOIN
+    order_details od ON o.id = od.order_id
+        INNER JOIN
+    customers cus ON o.customer_id = cus.id
+        INNER JOIN
+    employees e ON o.employee_id = e.employee_id
+        INNER JOIN
+    products p ON od.product_id = p.id
+        INNER JOIN
+    shippers sh ON o.shipper_id = sh.id
+        INNER JOIN
+    categories cat ON p.category_id = cat.id
+        INNER JOIN
+    suppliers sup ON p.supplier_id = sup.id
+    WHERE e.employee_id > 3 AND e.employee_id <= 10
+    GROUP BY cat.name
+    HAVING average_quantity > 21
+    ORDER BY count DESC
+    LIMIT 4
+    OFFSET 1
